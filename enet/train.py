@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+
 from tqdm import tqdm
 from nodes import ENet
 from functions import get_class_weights, loader

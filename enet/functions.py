@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cv2
 import os
+
 from PIL import Image
 from params import root_path
 
@@ -103,3 +104,11 @@ def decode_segmap(image):
     rgb[:, :, 1] = g
     rgb[:, :, 2] = r
     return rgb
+
+
+def save_model(e, enet):
+    # Save the parameters with the checkpoint
+    checkpoint = {"epochs": e, "state_dict": enet.state_dict()}
+    torch.save(checkpoint, f"{root_path}/ckpt-enet-1.pth")
+    # Save the entire model
+    torch.save(enet, f"{root_path}/model.pt")

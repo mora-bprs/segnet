@@ -4,6 +4,7 @@ import torch
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
+
 from PIL import Image
 from nodes import ENet
 from functions import decode_segmap
@@ -11,6 +12,7 @@ from params import root_path
 
 
 # TODO: Implement resource setup to run locally
+print("1. setting up processing unit and loading the model")
 enet = ENet(12)  # instantiate a 12 class ENet
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 enet = enet.to(device)
@@ -20,6 +22,7 @@ state_dict = torch.load(f"{root_path}/ckpt-enet-5.pth")["state_dict"]
 enet.load_state_dict(state_dict)
 
 # TODO: make the inference process interactive and easy to test
+print("2. loading the image file for inference")
 fname = "Seq05VD_f05100.png"
 tmg_ = plt.imread(f"{root_path}/test/" + fname)
 tmg_ = cv2.resize(tmg_, (512, 512), cv2.INTER_NEAREST)
@@ -35,7 +38,8 @@ smg_ = Image.open(f"{root_path}/testannot/" + fname)
 smg_ = cv2.resize(np.array(smg_), (512, 512), cv2.INTER_NEAREST)
 
 # move the output to cpu TODO: why?
-out2 = out1.cpu().detach().numpy()
+# out2 = out1.cpu().detach().numpy()
+out2 = out1
 mno = 8  # Should be between 0 - n-1 | where n is the number of classes
 
 figure = plt.figure(figsize=(20, 10))
